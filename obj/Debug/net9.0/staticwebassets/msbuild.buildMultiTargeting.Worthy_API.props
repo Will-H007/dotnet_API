@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Worthy_API.props" />
+</Project>
