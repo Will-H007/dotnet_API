@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Worthy_API.Data;
+using Worthy_API.Dtos.Metrics;
 using Worthy_API.Helpers;
 using Worthy_API.Interfaces;
 using Worthy_API.Models;
@@ -36,23 +37,43 @@ public class MetricsRepository :IMetricsRepository
         return await metrics.ToListAsync(); 
     }
 
-    public async Task<Metrics> GetByIdAsync(int id)
+    public async Task<Metrics?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+       return await _context.Metrics.FirstOrDefaultAsync(m => m.Id == id);
     }
 
-    public async Task<Metrics> CreateAsync(Metrics metrics)
+    public async Task<Metrics> CreateAsync(Metrics metricsModel)
     {
-        throw new NotImplementedException();
+        await _context.Metrics.AddAsync(metricsModel);
+        await _context.SaveChangesAsync();
+        return metricsModel;
     }
 
-    public async Task<Metrics?> UpdateAsync(Metrics metrics)
+
+
+    public async Task<Metrics?> UpdateAsync(int id, UpdateMetricsRequestDto metricsDto)
     {
-        throw new NotImplementedException();
+        var existingMetrics = await _context.Metrics.FirstOrDefaultAsync(m => m.Id == id);
+        if (existingMetrics == null)
+        {
+            return null;
+        }
+        existingMetrics.Name = metricsDto.Name;
+        existingMetrics.Type = metricsDto.Type;
+        existingMetrics.Score = metricsDto.Score;
+        await _context.SaveChangesAsync();
+        return existingMetrics;
     }
 
     public async Task<Metrics?> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var metricsModel = await _context.Metrics.FirstOrDefaultAsync(m => m.Id == id);
+        if (metricsModel == null)
+        {
+            return null;
+        } 
+        _context.Metrics.Remove(metricsModel);
+        await _context.SaveChangesAsync();
+        return metricsModel;
     }
 }
