@@ -99,10 +99,10 @@ public class MetricsController : Controller
         return NoContent();
 
     }
-    // This action is for returning a view (MVC)
-    [HttpGet("index")]  // This distinguishes the action with the /api/metrics/index route
-    public IActionResult Index()
-    {
-        return View();
-    }
+    // // This action is for returning a view (MVC)
+    // [HttpGet("index")]  // This distinguishes the action with the /api/metrics/index route
+    // public IActionResult Index()
+    // {
+    //     return View();
+    // }
 }
